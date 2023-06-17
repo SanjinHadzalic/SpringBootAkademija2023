@@ -10,6 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class DashboardServiceProduction implements DashboardService {
     @Override
     public String getDashboard() {
-        return "dashboardPRO.html";
+        return "dashboardPRO";
     }
 }
