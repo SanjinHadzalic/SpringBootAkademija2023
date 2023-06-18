@@ -12,10 +12,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class AmadeusService {
@@ -28,7 +28,7 @@ public class AmadeusService {
     public List<Location> searchAirports(String keyword) {
         try {
             Params param = Params.with("subType", Locations.AIRPORT)
-                    .and("keyword",keyword);
+                    .and("keyword", keyword);
 
             return Arrays.asList(amadeus.referenceData.locations
                     .get(param)
@@ -39,15 +39,18 @@ public class AmadeusService {
             return Collections.emptyList();
         }
     }
-    public List<FlightSearchResultDto> searchFlights(String originLocationCode, String destinationLocationCode, String departureDate, String returnDate, String adults ) {
+
+    public List<FlightSearchResultDto> searchFlights(String originLocationCode, String destinationLocationCode, LocalDate departureDate, LocalDate returnDate, Integer adults) {
         try {
             Params params = Params
                     .with("originLocationCode", originLocationCode)
                     .and("destinationLocationCode", destinationLocationCode)
-                    .and("departureDate", departureDate)
-                    .and("returnDate", returnDate)
+                    .and("departureDate", departureDate.toString())
+//                    .and("returnDate", returnDate)
                     .and("adults", adults);
-
+            if (returnDate != null) {
+                params.and("returnDate", returnDate.toString());
+            }
             List<FlightOfferSearch> flightOfferSearcheList = Arrays.asList(amadeus.shopping.flightOffersSearch.get(params));
             List<FlightSearchResultDto> flightSearchResultDtoList = flightOfferSearcheList.stream()
                     .map(flightOfferSearch -> flightOffersSearchFlightSearchResultDtoMapper.map(flightOfferSearch))
