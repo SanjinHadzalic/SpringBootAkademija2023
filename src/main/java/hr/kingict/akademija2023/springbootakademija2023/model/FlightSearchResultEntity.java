@@ -6,11 +6,7 @@ import java.time.LocalDate;
 import java.util.Objects;
 @Entity
 @Table(name = "rezultati_pretrage")
-public class FlightSearchResultEntity {
-    @Column(name = "id")
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+public class FlightSearchResultEntity extends BasicEntity{
     @Column(name = "polazak_sifra_aerodroma_polazak")
     private String outboundDepartureAirport;
     @Column(name = "polazak_sifra_aerodroma_odrediste")
@@ -31,14 +27,6 @@ public class FlightSearchResultEntity {
     private String carrier;
     @Column(name = "cijena")
     private String price;
-    @Column(name = "datum_kreiranja")
-    private LocalDate dateCreated;
-    @Column(name = "korisnik_kreiranja")
-    private String userCreated;
-    @Column(name = "datum_azuriranja")
-    private LocalDate dateUpdated;
-    @Column(name = "korisnik_azuriranja")
-    private String userUpdated;
 
     @ManyToOne
     @JoinColumn(name = "id_pretrage")
@@ -52,13 +40,6 @@ public class FlightSearchResultEntity {
         this.flightSearchEntity = flightSearchEntity;
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getOutboundDepartureAirport() {
         return outboundDepartureAirport;
@@ -140,48 +121,4 @@ public class FlightSearchResultEntity {
         this.price = price;
     }
 
-    public LocalDate getDateCreated() {
-        return dateCreated;
-    }
-
-    public void setDateCreated(LocalDate dateCreated) {
-        this.dateCreated = dateCreated;
-    }
-
-    public String getUserCreated() {
-        return userCreated;
-    }
-
-    public void setUserCreated(String userCreated) {
-        this.userCreated = userCreated;
-    }
-
-    public LocalDate getDateUpdated() {
-        return dateUpdated;
-    }
-
-    public void setDateUpdated(LocalDate dateUpdated) {
-        this.dateUpdated = dateUpdated;
-    }
-
-    public String getUserUpdated() {
-        return userUpdated;
-    }
-
-    public void setUserUpdated(String userUpdated) {
-        this.userUpdated = userUpdated;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        FlightSearchResultEntity that = (FlightSearchResultEntity) o;
-        return id.equals(that.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
 }
