@@ -40,8 +40,12 @@ create table rezultati_pretrage
     prijevoznik                        varchar(255),
     cijena                             varchar(255),
 
+    id_pretrage                         int,
+
     datum_kreiranja                    date,
     korisnik_kreiranja                 varchar(50),
     datum_azuriranja                   date,
     korisnik_azuriranja                varchar(50)
-)
+);
+
+alter table rezultati_pretrage add  foreign key(id_pretrage) references pretrage_letova(id);

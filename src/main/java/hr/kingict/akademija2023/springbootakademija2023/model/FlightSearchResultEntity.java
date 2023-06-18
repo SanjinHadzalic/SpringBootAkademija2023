@@ -1,13 +1,11 @@
 package hr.kingict.akademija2023.springbootakademija2023.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.Objects;
-
+@Entity
+@Table(name = "rezultati_pretrage")
 public class FlightSearchResultEntity {
     @Column(name = "id")
     @Id
@@ -41,6 +39,18 @@ public class FlightSearchResultEntity {
     private LocalDate dateUpdated;
     @Column(name = "korisnik_azuriranja")
     private String userUpdated;
+
+    @ManyToOne
+    @JoinColumn(name = "id_pretrage")
+    private FlightSearchEntity flightSearchEntity;
+
+    public FlightSearchEntity getFlightSearchEntity() {
+        return flightSearchEntity;
+    }
+
+    public void setFlightSearchEntity(FlightSearchEntity flightSearchEntity) {
+        this.flightSearchEntity = flightSearchEntity;
+    }
 
     public Integer getId() {
         return id;

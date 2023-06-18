@@ -36,6 +36,7 @@ public class AmadeusService {
     private FlightSearchResultEntityRepository flightSearchResultEntityRepository;
     @Autowired
     private FlightSearchResultDtoFlightSearchEntityMapper flightSearchResultDtoFlightSearchEntityMapper;
+
     public List<Location> searchAirports(String keyword) {
         try {
             Params param = Params.with("subType", Locations.AIRPORT)
@@ -50,6 +51,7 @@ public class AmadeusService {
             return Collections.emptyList();
         }
     }
+
     @Transactional
     public List<FlightSearchResultDto> searchFlights(String originLocationCode, String destinationLocationCode, LocalDate departureDate, LocalDate returnDate, Integer adults) {
         try {
@@ -70,7 +72,6 @@ public class AmadeusService {
                     .with("originLocationCode", originLocationCode)
                     .and("destinationLocationCode", destinationLocationCode)
                     .and("departureDate", departureDate.toString())
-//                    .and("returnDate", returnDate)
                     .and("adults", adults)
                     .and("nonStop", true)
                     .and("max", 5);
@@ -84,7 +85,10 @@ public class AmadeusService {
 
             flightSearchResultDtoList.stream()
                     .map(flightSearchResultDto -> flightSearchResultDtoFlightSearchEntityMapper.map(flightSearchResultDto))
-                    .forEach(flightSearchResultEntity -> flightSearchResultEntityRepository.save(flightSearchResultEntity));
+                    .forEach(flightSearchResultEntity -> {
+                       flightSearchResultEntity.setFlightSearchEntity(flightSearchEntity1);
+                        flightSearchResultEntityRepository.save(flightSearchResultEntity);
+                    });
 
             return flightSearchResultDtoList;
         } catch (Exception ex) {
