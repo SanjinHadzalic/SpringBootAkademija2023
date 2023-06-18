@@ -13,6 +13,7 @@ public class LocationLocationDtoMapper {
         LocationDto locationDto = new LocationDto();
         locationDto.setName(location.getName());
         locationDto.setIataCode(location.getIataCode());
+        locationDto.setDetailedName(location.getDetailedName());
 
         return locationDto;
     }

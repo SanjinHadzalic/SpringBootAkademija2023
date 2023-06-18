@@ -3,6 +3,15 @@ package hr.kingict.akademija2023.springbootakademija2023.dto;
 public class LocationDto {
     private String iataCode;
     private String name;
+    private String detailedName;
+
+    public String getDetailedName() {
+        return detailedName;
+    }
+
+    public void setDetailedName(String detailedName) {
+        this.detailedName = detailedName;
+    }
 
     public String getIataCode() {
         return iataCode;

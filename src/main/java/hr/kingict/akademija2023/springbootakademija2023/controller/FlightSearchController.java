@@ -6,6 +6,7 @@ import hr.kingict.akademija2023.springbootakademija2023.dto.LocationDto;
 import hr.kingict.akademija2023.springbootakademija2023.mapper.LocationLocationDtoMapper;
 import hr.kingict.akademija2023.springbootakademija2023.services.AmadeusService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,12 +21,17 @@ public class FlightSearchController {
     private AmadeusService amadeusService;
     @Autowired
     private LocationLocationDtoMapper locationLocationDtoMapper;
+
     @GetMapping(value = "/airports/{keyword}")
-    public List<Location> searchAirports(@PathVariable String keyword){
+    public ResponseEntity<List<LocationDto>> searchAirports(@PathVariable String keyword) {
+
         List<Location> locationList = amadeusService.searchAirports(keyword);
         List<LocationDto> locationDtoList = locationList.stream()
                 .map(location -> locationLocationDtoMapper.map(location))
                 .toList();
-        return locationList;
+
+        return ResponseEntity
+                .ok()
+                .body(locationDtoList);
     }
 }
