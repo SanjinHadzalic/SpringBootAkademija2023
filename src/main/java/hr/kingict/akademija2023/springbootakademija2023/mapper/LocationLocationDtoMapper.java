@@ -1,0 +1,19 @@
+package hr.kingict.akademija2023.springbootakademija2023.mapper;
+
+import com.amadeus.resources.Location;
+import hr.kingict.akademija2023.springbootakademija2023.dto.LocationDto;
+import org.springframework.stereotype.Component;
+
+@Component
+public class LocationLocationDtoMapper {
+    public LocationDto map(Location location){
+        if (location==null)
+            return null;
+
+        LocationDto locationDto = new LocationDto();
+        locationDto.setName(location.getName());
+        locationDto.setIataCode(location.getIataCode());
+
+        return locationDto;
+    }
+}
