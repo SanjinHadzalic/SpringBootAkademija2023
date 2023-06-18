@@ -14,6 +14,10 @@ create table pretrage_letova
     sifra_odredista char(3),
     datum_odlaska date,
     datum_povratka date,
-    broj_odraslih int
+    broj_odraslih int,
 
+    datum_kreiranja date,
+    korisnik_kreiranja varchar(50),
+    datum_azuriranja date,
+    korisnik_azuriranja varchar(50)
 )

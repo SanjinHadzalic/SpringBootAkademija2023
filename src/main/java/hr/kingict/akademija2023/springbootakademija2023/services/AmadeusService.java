@@ -7,6 +7,9 @@ import com.amadeus.resources.FlightOfferSearch;
 import com.amadeus.resources.Location;
 import hr.kingict.akademija2023.springbootakademija2023.dto.FlightSearchResultDto;
 import hr.kingict.akademija2023.springbootakademija2023.mapper.FlightOffersSearchFlightSearchResultDtoMapper;
+import hr.kingict.akademija2023.springbootakademija2023.model.FlightSearchEntity;
+import hr.kingict.akademija2023.springbootakademija2023.repository.FlightSearchEntityRepository;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +27,8 @@ public class AmadeusService {
     private FlightOffersSearchFlightSearchResultDtoMapper flightOffersSearchFlightSearchResultDtoMapper;
     @Autowired
     private Amadeus amadeus;
+    @Autowired
+    private FlightSearchEntityRepository flightSearchEntityRepository;
 
     public List<Location> searchAirports(String keyword) {
         try {
@@ -39,17 +44,30 @@ public class AmadeusService {
             return Collections.emptyList();
         }
     }
-
+    @Transactional
     public List<FlightSearchResultDto> searchFlights(String originLocationCode, String destinationLocationCode, LocalDate departureDate, LocalDate returnDate, Integer adults) {
         try {
+
+            FlightSearchEntity flightSearchEntity1 = new FlightSearchEntity();
+            flightSearchEntity1.setOriginLocationCode(originLocationCode);
+            flightSearchEntity1.setDestinationLocationCode(destinationLocationCode);
+            flightSearchEntity1.setDepartureDate(departureDate);
+            flightSearchEntity1.setReturnDate(returnDate);
+            flightSearchEntity1.setAdults(adults);
+
+            flightSearchEntity1.setDateCreated(LocalDate.now());
+            flightSearchEntity1.setUserCreated("Sanjin");
+
+            flightSearchEntityRepository.save(flightSearchEntity1);
+
             Params params = Params
                     .with("originLocationCode", originLocationCode)
                     .and("destinationLocationCode", destinationLocationCode)
                     .and("departureDate", departureDate.toString())
 //                    .and("returnDate", returnDate)
                     .and("adults", adults)
-                    .and("nonStop",true)
-                    .and("max",5);
+                    .and("nonStop", true)
+                    .and("max", 5);
             if (returnDate != null) {
                 params.and("returnDate", returnDate.toString());
             }
