@@ -47,7 +47,9 @@ public class AmadeusService {
                     .and("destinationLocationCode", destinationLocationCode)
                     .and("departureDate", departureDate.toString())
 //                    .and("returnDate", returnDate)
-                    .and("adults", adults);
+                    .and("adults", adults)
+                    .and("nonStop",true)
+                    .and("max",5);
             if (returnDate != null) {
                 params.and("returnDate", returnDate.toString());
             }
