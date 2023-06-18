@@ -7,8 +7,11 @@ import com.amadeus.resources.FlightOfferSearch;
 import com.amadeus.resources.Location;
 import hr.kingict.akademija2023.springbootakademija2023.dto.FlightSearchResultDto;
 import hr.kingict.akademija2023.springbootakademija2023.mapper.FlightOffersSearchFlightSearchResultDtoMapper;
+import hr.kingict.akademija2023.springbootakademija2023.mapper.FlightSearchResultDtoFlightSearchEntityMapper;
 import hr.kingict.akademija2023.springbootakademija2023.model.FlightSearchEntity;
+import hr.kingict.akademija2023.springbootakademija2023.model.FlightSearchResultEntity;
 import hr.kingict.akademija2023.springbootakademija2023.repository.FlightSearchEntityRepository;
+import hr.kingict.akademija2023.springbootakademija2023.repository.FlightSearchResultEntityRepository;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +32,10 @@ public class AmadeusService {
     private Amadeus amadeus;
     @Autowired
     private FlightSearchEntityRepository flightSearchEntityRepository;
-
+    @Autowired
+    private FlightSearchResultEntityRepository flightSearchResultEntityRepository;
+    @Autowired
+    private FlightSearchResultDtoFlightSearchEntityMapper flightSearchResultDtoFlightSearchEntityMapper;
     public List<Location> searchAirports(String keyword) {
         try {
             Params param = Params.with("subType", Locations.AIRPORT)
@@ -75,6 +81,10 @@ public class AmadeusService {
             List<FlightSearchResultDto> flightSearchResultDtoList = flightOfferSearcheList.stream()
                     .map(flightOfferSearch -> flightOffersSearchFlightSearchResultDtoMapper.map(flightOfferSearch))
                     .toList();
+
+            flightSearchResultDtoList.stream()
+                    .map(flightSearchResultDto -> flightSearchResultDtoFlightSearchEntityMapper.map(flightSearchResultDto))
+                    .forEach(flightSearchResultEntity -> flightSearchResultEntityRepository.save(flightSearchResultEntity));
 
             return flightSearchResultDtoList;
         } catch (Exception ex) {
